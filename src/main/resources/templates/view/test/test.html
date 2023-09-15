@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+	<body>
+		<main id="main" class="main" layout:fragment="content">
+			<iframe id="main_frame" width="100%" height="768" src="http://localhost:8080/login.html?username=admin&password=admin" onload="init()"></iframe>
+			<script type="text/javascript">
+			function init() {http://localhost:8080/login.html?username=admin&password=admin
+				if(!window.location.hash) {
+					$('iframe').contents().find('.nav-item').each(function(i, item){
+						$(item).hide();
+					});
+				
+					document.getElementById("main_frame").src = 'http://localhost:8080/p/test/annotate';
+			        window.location = window.location + '#loaded';
+			    }
+			}
+			</script>
+		</main>
+	</body>
+</html>

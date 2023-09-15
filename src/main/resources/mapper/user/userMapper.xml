@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kr.ark.application.mapper.user.UserMapper">
+    <select id="selectUser" parameterType="com.kr.ark.application.vo.UserVO" resultType="com.kr.ark.application.vo.UserVO">
+		SELECT SERIAL			AS serial
+			   , ID				AS id
+			   , PASSWORD		AS password
+			   , NICK_NAME		AS nickName
+			   , EMAIL			AS email
+			   , MEMBER_STATUS	AS memberStatus
+			   , REGISTER_DATE	AS registerDate
+			   , REGISTER		AS register
+			   , UPDATE_DATE	AS updateDate
+			   , UPDATE_USER	AS updateUser
+			   , DELETED		AS deleted
+		  FROM TB_USER
+		<if test='lookupType == "id"'>
+		 WHERE ID = #{id}
+		</if>
+		<if test='lookupType == "nickName"'>
+		 WHERE NICK_NAME = #{nickName}
+		</if>
+    </select>
+
+    <insert id="insertUser" parameterType="com.kr.ark.application.vo.UserVO">
+		INSERT INTO TB_USER (
+			SERIAL
+			, ID
+			, PASSWORD
+			, NICK_NAME
+			, EMAIL
+			, MEMBER_STATUS
+		) VALUES (
+			#{serial}
+			, #{id}
+			, #{password}
+			, #{nickName}
+			, #{email}
+			, '001'
+		);
+    </insert>
+</mapper>

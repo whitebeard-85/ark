@@ -1,0 +1,147 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/blank}">
+	<main layout:fragment="content">
+		<div class="container">
+     		<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+	        	<div class="container">
+		          	<div class="row justify-content-center">
+			            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+			              	<div class="d-flex justify-content-center py-4">
+				                <a href="index.html" class="logo d-flex align-items-center w-auto">
+				                  	<img src="/assets/image/logo-noahs-ark.png" alt="">
+				                  	<span class="d-none d-lg-block">Noah's ARK</span>
+				                </a>
+			              	</div><!-- End Logo -->
+			              	<div class="card mb-3">
+				                <div class="card-body">
+				                  	<div class="pt-4 pb-2">
+					                    <h5 class="card-title text-center pb-0 fs-4">회원가입</h5>
+					                    <p class="text-center small">회원가입을 위해 사용자정보를 입력해주세요.</p>
+				                  	</div>
+				                  	<form class="row g-3 needs-validation" id="signupFrm" novalidate>
+					                    <div class="col-12">
+					                      	<label for="yourName" class="form-label">닉네임</label>
+					                      	<input type="text" name="nickName" class="form-control" id="nickName" required>
+					                      	<div class="invalid-feedback">닉네임을 입력해주세요.</div>
+					                    </div>
+					                    <div class="col-12">
+					                      	<label for="yourEmail" class="form-label">이메일</label>
+					                      	<input type="email" name="email" class="form-control" id="email" required>
+					                      	<div class="invalid-feedback">정확한 이메일을 입력해주세요.</div>
+					                    </div>
+					                    <div class="col-12">
+					                      	<label for="yourUsername" class="form-label">아이디</label>
+					                      	<div class="input-group has-validation">
+					                        	<span class="input-group-text" id="inputGroupPrepend">@</span>
+					                        	<input type="text" name="id" class="form-control" id="id" required>
+					                        	<div class="invalid-feedback">아이디를 입력해주세요.</div>
+					                      	</div>
+					                    </div>
+					                    <div class="col-12">
+					                      	<label for="yourPassword" class="form-label">비밀번호</label>
+					                      	<input type="password" name="password" class="form-control" id="password" required>
+					                      	<div class="invalid-feedback">비밀번호를 입력해주세요.</div>
+					                    </div>
+					                    <div class="col-12">
+					                      	<div class="form-check">
+					                        	<input class="form-check-input" name="terms" type="checkbox" value="" id="terms" required>
+					                        	<label class="form-check-label" for="acceptTerms"><a href="#">이용약관</a>에 동의합니다.</label>
+					                        	<div class="invalid-feedback">이용약관에 동의해주세요.</div>
+					                      	</div>
+					                    </div>
+					                    <div class="col-12">
+					                      	<button class="btn btn-primary w-100" type="submit">회원가입</button>
+					                    </div>
+					                    <div class="col-12">
+					                      	<p class="small mb-0">이미 가입하셨나요? <a href="/login">로그인</a></p>
+					                    </div>
+				                  	</form>
+				                </div>
+			              	</div>
+			              	<div class="credits">
+			                	<!-- All the links in the footer should remain intact. -->
+			                	<!-- You can delete the links only if you purchased the pro version. -->
+			                	<!-- Licensing information: https://bootstrapmade.com/license/ -->
+			                	<!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+			                	Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+			              	</div>
+			            </div>
+		          	</div>
+		        </div>
+      		</section>
+   		</div>
+	</main>
+	<th:block layout:fragment="script">
+		<script type="text/javascript">
+			const join = {
+				frm : null,
+				init : function(){
+					this.frm = $("#signupFrm");
+					this.generateEvent();
+				},
+				generateEvent : function() {
+					join.frm.submit(function (event) {
+					    event.preventDefault();
+					    console.log("checkValidity >>>>>>>>> ", join.frm[0].checkValidity());
+					    if (join.frm[0].checkValidity() === false) {
+					        event.stopPropagation();
+					    } else {
+							console.log("1111 ",  join.frm.serializeObject());
+					    	common.callAjax("post", "/ajax/user/insertUser", join.frm.serializeObject(), function(data){
+					    		common.alert('회원가입이 완료되었습니다.', function() {
+									location.href = '/login';
+								});
+							});
+					    }
+
+					    join.frm.addClass('was-validated');
+					});
+
+					$("input[name=username]", join.frm).on('blur', function() {
+						if($(this).val() != '') {
+							if(!join.selectUser('nickName')) {
+								common.alert('이미 사용중인 닉네임입니다.', function(){
+									$("input[name=nickName]", join.frm).val('');
+									$("input[name=nickName]", join.frm).focus();
+								});
+							}else {
+								$("input[name=email]", join.frm).focus();
+							}
+						}
+					});
+
+					$("input[name=id]", join.frm).on('blur', function() {
+						if($(this).val() != '') {
+							if(!join.selectUser('id')) {
+								common.alert('이미 사용중인 아이디입니다.', function(){
+									$("input[name=id]", join.frm).val('');
+									$("input[name=id]", join.frm).focus();
+								});
+							}else {
+								$("input[name=password]", join.frm).focus();
+							}
+						}
+					});
+				},
+				selectUser : function(lookupType) {
+					let flag = true;
+					let data = join.frm.serializeObject();
+					data.lookupType = lookupType;
+
+					common.callAjax("post", "/ajax/user/selectUser", data, function(res){
+						if(res.data != null) {
+							flag = false;
+						}
+					});
+
+					return flag;
+				}
+			}
+
+			$(function(){
+				join.init();
+			});
+		</script>
+	</th:block>
+</html>

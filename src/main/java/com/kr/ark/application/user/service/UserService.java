@@ -1,13 +1,12 @@
-package com.kr.ark.application.service.user;
+package com.kr.ark.application.user.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.kr.ark.application.mapper.user.UserMapper;
-import com.kr.ark.application.vo.UserVO;
+import com.kr.ark.application.user.mapper.UserMapper;
+import com.kr.ark.application.user.vo.UserVO;
 import com.kr.ark.common.model.ResponseMessage;
-import com.kr.ark.common.util.CommonUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,8 +23,7 @@ public class UserService {
 	}
 
 	public ResponseMessage insertUser(UserVO input) {
-		input.setSerial(CommonUtils.makeSerial());
-		input.setPassword(passwordEncoder.encode(input.getPassword()));
+		input.setPwd(passwordEncoder.encode(input.getPwd()));
 		int result = userMapper.insertUser(input);
 
 		if(result > 0) {

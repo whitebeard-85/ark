@@ -1,8 +1,8 @@
-package com.kr.ark.application.mapper.user;
+package com.kr.ark.application.user.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.kr.ark.application.vo.UserVO;
+import com.kr.ark.application.user.vo.UserVO;
 
 @Mapper
 public interface UserMapper {

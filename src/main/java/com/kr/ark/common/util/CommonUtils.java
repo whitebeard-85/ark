@@ -11,10 +11,10 @@ public abstract class CommonUtils {
 		return "/view/" + path;
 	}
 
-	public static String makeSerial() {
+	public static String makeSerial(String userGroup) {
 		String dateTime = new SimpleDateFormat("yyyyMMddHHmmssSSSSS").format(new Date());
 		String randomStr = RandomStringUtils.random(20, true, true);
-		String serial = "MGU" + dateTime + randomStr;
+		String serial = userGroup + dateTime + randomStr;
 		return serial;
 	}
 

@@ -1,42 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kr.ark.application.mapper.user.UserMapper">
-    <select id="selectUser" parameterType="com.kr.ark.application.vo.UserVO" resultType="com.kr.ark.application.vo.UserVO">
-		SELECT SERIAL			AS serial
-			   , ID				AS id
-			   , PASSWORD		AS password
-			   , NICK_NAME		AS nickName
-			   , EMAIL			AS email
-			   , MEMBER_STATUS	AS memberStatus
-			   , REGISTER_DATE	AS registerDate
-			   , REGISTER		AS register
-			   , UPDATE_DATE	AS updateDate
-			   , UPDATE_USER	AS updateUser
-			   , DELETED		AS deleted
+<mapper namespace="com.kr.ark.application.user.mapper.UserMapper">
+    <select id="selectUser" parameterType="com.kr.ark.application.user.vo.UserVO" resultType="com.kr.ark.application.user.vo.UserVO">
+		SELECT USR_SN		AS usrSn
+			   , USR_ID		AS usrId
+			   , PWD		AS pwd
+			   , ACTV_NM	AS actvNm
+			   , ROLE_CD	AS roleCd
+			   , RS_PWD_YN	AS rsPwdYn
+			   , TMP_PWD	AS tmpPwd
+			   , REG_DATE	AS regDate
+			   , REGR		AS regr
+			   , MOD_DATE	AS modDate
+			   , MODR		AS modr
 		  FROM TB_USER
-		<if test='lookupType == "id"'>
-		 WHERE ID = #{id}
+		<if test='lookupType == "usrId"'>
+		 WHERE USR_ID = #{usrId}
 		</if>
-		<if test='lookupType == "nickName"'>
-		 WHERE NICK_NAME = #{nickName}
+		<if test='lookupType == "actvNm"'>
+		 WHERE ACTV_NM = #{actvNm}
 		</if>
     </select>
 
-    <insert id="insertUser" parameterType="com.kr.ark.application.vo.UserVO">
+    <insert id="insertUser" parameterType="com.kr.ark.application.user.vo.UserVO">
 		INSERT INTO TB_USER (
-			SERIAL
-			, ID
-			, PASSWORD
-			, NICK_NAME
-			, EMAIL
-			, MEMBER_STATUS
+			USR_ID
+			, PWD
+			, ACTV_NM
+			, REGR
+			, MODR
 		) VALUES (
-			#{serial}
-			, #{id}
-			, #{password}
-			, #{nickName}
-			, #{email}
-			, '001'
+			#{usrId}
+			, #{pwd}
+			, #{actvNm}
+			, #{regr}
+			, #{modr}
 		);
     </insert>
 </mapper>

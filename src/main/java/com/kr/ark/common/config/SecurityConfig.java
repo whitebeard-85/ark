@@ -31,14 +31,14 @@ public class SecurityConfig {
 //        		.anyRequest().permitAll()
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                 .requestMatchers("/assets/**", "/ajax/**", "/login", "/signup", "/error").permitAll()
-                .requestMatchers("/","/index").authenticated()
+                .requestMatchers("/","/main").authenticated()
         )
         .formLogin(login -> login
                 .loginPage("/login")	// [A] 커스텀 로그인 페이지 지정
                 .loginProcessingUrl("/login-process")	// [B] submit 받을 url
                 .usernameParameter("userid")	// [C] submit할 아이디
                 .passwordParameter("pw")	// [D] submit할 비밀번호
-                .defaultSuccessUrl("/index", true)
+                .defaultSuccessUrl("/main", true)
                 .failureHandler(new CustomAuthFailureHandler())
                 .permitAll()
         )

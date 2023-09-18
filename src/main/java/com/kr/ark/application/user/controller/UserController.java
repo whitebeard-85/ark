@@ -1,4 +1,4 @@
-package com.kr.ark.application.controller.user;
+package com.kr.ark.application.user.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

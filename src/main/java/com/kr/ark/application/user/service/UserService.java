@@ -18,11 +18,17 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 
 	public ResponseMessage selectUser(UserVO input) {
+		input.setPwd(passwordEncoder.encode(input.getPwd()));
 		UserVO userVo = userMapper.selectUser(input);
 		return ResponseMessage.ok(userVo, "조회되었습니다.");
 	}
 
 	public ResponseMessage insertUser(UserVO input) {
+		if(input.getRegr() == null || input.getModr() == null) {
+			input.setRegr(input.getUsrId());
+			input.setModr(input.getUsrId());
+		}
+
 		input.setPwd(passwordEncoder.encode(input.getPwd()));
 		int result = userMapper.insertUser(input);
 

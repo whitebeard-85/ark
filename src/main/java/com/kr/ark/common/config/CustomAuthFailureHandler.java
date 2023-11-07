@@ -3,6 +3,7 @@ package com.kr.ark.common.config;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -19,7 +20,9 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
 
 		String errorMessage;
 
-		if(exception instanceof UsernameNotFoundException) {
+		exception.printStackTrace();
+
+		if(exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
 			errorMessage = "아이디 또는 비밀번호가 맞지 않습니다. 다시 확인해주세요.";
 		} else {
 			errorMessage = "알 수 없는 오류로 로그인 요청을 처리할 수 없습니다. 관리자에게 문의하세요.";

@@ -1,0 +1,145 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+	<main id="main" class="main" layout:fragment="content">
+		<div class="pagetitle">
+	      <h1>공통코드관리</h1>
+	      <nav>
+	        <ol class="breadcrumb">
+	          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+	          <li class="breadcrumb-item">관리자메뉴</li>
+	          <li class="breadcrumb-item active">공통코드관리</li>
+	        </ol>
+	      </nav>
+	    </div><!-- End Page Title -->
+
+	    <section class="section">
+	      <div class="row">
+	        <div class="col-lg-12">
+
+	          <div class="card">
+	            <div class="card-body">
+	              <h5 class="card-title">그룹코드 목록</h5>
+	              <!-- Table with stripped rows -->
+	              <table class="table table-bordered" id="tbl_code_grp" style="table-layout: fixed">
+	                <thead>
+	                  <tr>
+	                    <th scope="col" class="txt_c"><input type="checkbox" name="checkall" id="checkall"></th>
+	                    <th scope="col" class="txt_c">그룹코드</th>
+	                    <th scope="col" class="txt_c">그룹코드명</th>
+	                    <th scope="col" class="txt_c">사용여부</th>
+	                    <th scope="col" class="txt_c">설명1</th>
+	                    <th scope="col" class="txt_c">설명2</th>
+	                  </tr>
+	                </thead>
+	                <tbody>
+	                </tbody>
+	              </table>
+	              <!-- End Table with stripped rows -->
+	            </div>
+	          </div>
+	        </div>
+	        <div class="col-lg-12">
+	          <div class="card">
+	            <div class="card-body">
+	              <h5 class="card-title">코드 목록</h5>
+	              <!-- Table with stripped rows -->
+	              <table class="table table-bordered" id="tbl_code">
+	                <thead>
+	                  <tr>
+	                    <th scope="col" class="txt_c"><input type="checkbox" name="checkall" id="checkall"></th>
+	                    <th scope="col" class="txt_c">그룹코드</th>
+	                    <th scope="col" class="txt_c">코드</th>
+	                    <th scope="col" align="center">코드명</th>
+	                    <th scope="col" class="txt_c">사용여부</th>
+	                    <th scope="col" class="txt_c">설명1</th>
+	                    <th scope="col" class="txt_c">설명2</th>
+	                  </tr>
+	                </thead>
+	                <tbody>
+	                </tbody>
+	              </table>
+	              <!-- End Table with stripped rows -->
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </section>
+	    <th:block layout:fragment="script">
+		    <script>
+				var code = {
+					frm : null,
+					grid : null,
+					gridObj : null,
+					init : function() {
+						//this.frm = $("#codeForm");
+						this.grid = $('#tbl_code_grp');
+	            		this.gridObj = this.grid.DataTable(code.gridOptions);
+					},
+					gridOptions : {
+						language        : 'ko',
+		                processing      : true,
+		                serverSide      : true,
+		                ajax            : {
+		                    url         : "/api/code/selectCodeGrpList",
+		                    type        : "POST",
+		                    contentType : "application/json",
+		                    data 		: function(d) {
+		                        let param = $.extend({}, d, code.getParams());
+		                        return JSON.stringify(param);
+		                    }
+		                },
+		                columns			: [
+		                    { data : '',                            name : 'chk',		width : '3%',	className : 'txt_c', 	orderable: false, align: 'dt-center',
+		                    	render : function(data, type, full, meta) {
+		                    		let content = [];
+
+	                        		content.push('<div class="">');
+	                        		content.push('<input type="checkbox" name="chk" id="chk_' + meta.row + '" value=\'' + JSON.stringify(full) + '\'/>');
+	                        		content.push('</div>');
+
+	                        		return content.join('');
+		                        }
+		                    },
+		                    { data : 'grpCd',           name : '그룹코드',		width : '10%',	className : 'txt_c', 	orderable: true,
+		                    	render : function(data, type, full, meta) {
+		                            return '<a href="javascript:searchTable.popup.openDetailPop(' + full.grpCd + ');">' + data + '</a>';
+		                        }
+		                    },
+		                    { data : 'grpCdNm',           name : '그룹코드명',		width : '20%',	className : 'td-limit', 	orderable: true},
+		                    { data : 'useYn',      name : '사용여부',  	width : '10%',	className : 'txt_c', 	orderable: true},
+		                    { data : 'desc1',          name : '설명1',  		width : '28%',	className : 'txt_c',	orderable: true},
+		                    { data : 'desc2',      name : '설명2',  	width : '28%',	className : 'txt_l', 	orderable: true}
+		                ],
+		                columnDefs 		: [
+		                	{}
+		                ],
+		                order			: [],
+		                paging          : false,
+		                //pagingType      : "full_numbers",
+		                //pageLength      : 10,
+		                searching       : false,
+		                ordering        : false,
+		                info            : false,
+		                autoWidth       : false,
+		                //dom             : 't<"bottom"ipl>'
+					},
+					getParams : function() {
+		                let param = {
+		                    searchType				: '',
+		                    searchValue				: '',
+		                };
+
+		                return param;
+		            },
+				}
+
+				$(document).ready(function() {
+		            code.init();
+					/* Grid Checkbox 전체 제어 */
+					//excommon.generateEvents();
+		        });
+			</script>
+		</th:block>
+	</main><!-- End #main -->
+</html>

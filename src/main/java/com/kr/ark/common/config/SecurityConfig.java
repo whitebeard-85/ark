@@ -30,8 +30,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request -> request
 //        		.anyRequest().permitAll()
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                .requestMatchers("/assets/**", "/ajax/**", "/login", "/signup", "/error").permitAll()
-                .requestMatchers("/","/main").authenticated()
+                .requestMatchers("/assets/**", "/api/**", "/login", "/signup", "/error").permitAll()
+                .requestMatchers("/","/main","/code/**").authenticated()
         )
         .formLogin(login -> login
                 .loginPage("/login")	// [A] 커스텀 로그인 페이지 지정
@@ -48,7 +48,7 @@ public class SecurityConfig {
     }
 
 	@Bean
-    public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
+	public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
         return new ServletListenerRegistrationBean<HttpSessionEventPublisher>(new HttpSessionEventPublisher() {
             @Override
             public void sessionCreated(HttpSessionEvent event) {

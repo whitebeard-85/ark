@@ -6,6 +6,7 @@
 			   , USR_ID		AS usrId
 			   , PWD		AS pwd
 			   , ACTV_NM	AS actvNm
+			   , AGREE_YN	AS agreeYn
 			   , ROLE_CD	AS roleCd
 			   , RS_PWD_YN	AS rsPwdYn
 			   , TMP_PWD	AS tmpPwd
@@ -14,11 +15,12 @@
 			   , MOD_DATE	AS modDate
 			   , MODR		AS modr
 		  FROM TB_USER
+		 WHERE 1=1
 		<if test='lookupType == "usrId"'>
-		 WHERE USR_ID = #{usrId}
+		   AND USR_ID = #{usrId}
 		</if>
 		<if test='lookupType == "actvNm"'>
-		 WHERE ACTV_NM = #{actvNm}
+		   AND ACTV_NM = #{actvNm}
 		</if>
     </select>
 
@@ -27,12 +29,14 @@
 			USR_ID
 			, PWD
 			, ACTV_NM
+			, AGREE_YN
 			, REGR
 			, MODR
 		) VALUES (
 			#{usrId}
 			, #{pwd}
 			, #{actvNm}
+			, #{agreeYn}
 			, #{regr}
 			, #{modr}
 		);

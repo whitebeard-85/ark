@@ -6,13 +6,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.kr.ark.common.interceptor.HeaderInterceptor;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer{
-	
+
+	private final HeaderInterceptor headerInterceptor;
+
 	@Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new HeaderInterceptor())
+        registry.addInterceptor(headerInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/member/signup","/login");
+                .excludePathPatterns("/assets/**", "/api/**", "/login", "/signup", "/error");
     }
 }
